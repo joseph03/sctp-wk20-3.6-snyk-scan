@@ -73,6 +73,7 @@ jobs:
   summary:
     needs: [terraform-checks, snyk-checks]
     runs-on: ubuntu-latest
+    if: always()            # this makes it always run even if terraform-checks fails
     steps:
       - name: Adding markdown
         run: |
