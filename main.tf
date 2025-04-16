@@ -29,6 +29,6 @@ resource "aws_lambda_function" "hello_world" {
   handler       = "hello_world.lambda_handler"
   runtime       = "python3.12"
   filename      = "${path.module}/lambda/hello_world.zip"
-  
+
   source_code_hash = filebase64sha256("${path.module}/lambda/hello_world.zip")
 }
