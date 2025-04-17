@@ -1,6 +1,20 @@
 provider "aws" {
-  region = "us-east-1"
+  region = var.aws_region # instead of "us-east-1" to clear var not use warning
 }
+
+terraform {
+  #add to clear missing terraform version warning
+  required_version = ">= 1.5.0"
+
+  #add to clear mssing aws version warning
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
 
 resource "aws_iam_role" "lambda_exec_role" {
   name = "lambda_exec_role"
