@@ -1,0 +1,46 @@
+name: Test Cache with Package Scan
+run-name: ${{ github.actor }} is performing package vulnerability scans for serverless application
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  install-and-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      # Cache npm dependencies based on package-lock.json hash
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run npm audit
+        run: npm audit
+
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
+      - name: Run Snyk OSS scan
+        run: snyk test --severity-threshold=high
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Run Snyk Code scan
+        run: snyk code test
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Run Snyk IaC scan
+        run: snyk iac test --severity-threshold=high --report
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
