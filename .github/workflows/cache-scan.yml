@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run npm audit
+      - name: Run npm audit 
         run: npm audit
 
       - name: Install Snyk CLI
