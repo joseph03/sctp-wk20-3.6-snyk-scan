@@ -8,7 +8,7 @@ on:
 
 jobs:
   Initial-Checks:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest 
     steps:
       - name: Getting initiator name
         run: echo "Workflow initiated by ${{ github.actor }} from branch ${{ github.ref_name }}"
